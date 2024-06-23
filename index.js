@@ -15,6 +15,9 @@ app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 const corsOptions = {
   origin: process.env.CLIENT,
+  optionsSuccessStatus: 200, 
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 app.use(cors(corsOptions));
 app.use("/users", userRouter);
