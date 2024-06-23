@@ -13,16 +13,27 @@ app.use(morgan("dev"));
 
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
+
+const allowedOrigin = process.env.CLIENT;
+
 const corsOptions = {
-  origin: process.env.CLIENT,
-  optionsSuccessStatus: 200, 
+  origin: allowedOrigin,
+  optionsSuccessStatus: 200,
 };
 
-app.use(cors(corsOptions));  
+app.use(cors(corsOptions)); 
 
-app.use("/users", userRouter);
-app.use("/tour", tourRouter);
-app.get("/", (req, res) => {
+const checkOrigin = (req, res, next) => {
+  const origin = req.get('origin');
+  if (origin !== allowedOrigin) {
+    return res.status(403).send('Access forbidden: Invalid origin');
+  }
+  next();
+};
+
+app.use("/users", checkOrigin, userRouter);
+app.use("/tour", checkOrigin, tourRouter);
+app.get("/", checkOrigin, (req, res) => {
   res.send("Welcome to Game Zone");
 });
 
