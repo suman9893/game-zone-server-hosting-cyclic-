@@ -16,13 +16,11 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 const corsOptions = {
   origin: process.env.CLIENT,
   optionsSuccessStatus: 200, 
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: ["Content-Type", "Authorization"],
 };
-app.use(cors(corsOptions));
-app.use("/users", userRouter);
-app.use("/tour", tourRouter);
-app.get("/", (req, res) => {
+
+app.use("/users", cors(corsOptions), userRouter);
+app.use("/tour", cors(corsOptions), tourRouter);
+app.get("/", cors(corsOptions), (req, res) => {
   res.send("Welcome to Game Zone");
 });
 
