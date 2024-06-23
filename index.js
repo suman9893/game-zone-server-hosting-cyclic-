@@ -18,9 +18,11 @@ const corsOptions = {
   optionsSuccessStatus: 200, 
 };
 
-app.use("/users", cors(corsOptions), userRouter);
-app.use("/tour", cors(corsOptions), tourRouter);
-app.get("/", cors(corsOptions), (req, res) => {
+app.use(cors(corsOptions));  
+
+app.use("/users", userRouter);
+app.use("/tour", tourRouter);
+app.get("/", (req, res) => {
   res.send("Welcome to Game Zone");
 });
 
